@@ -33,7 +33,10 @@ ENV REACT_APP_API_ENTRYPOINT=$REACT_APP_API_ENTRYPOINT
 HEALTHCHECK --interval=30s --timeout=5s --start-period=45s \
    CMD /fluent-bit/bin/health.sh
 
-ENTRYPOINT ["/bin/sh"]
-CMD ["/fluent-bit/bin/entrypoint.sh"]
+
+#ENTRYPOINT ["/bin/sleep"]
+#CMD ["300"]
+
+ENTRYPOINT ["/bin/sh", "/fluent-bit/bin/entrypoint.sh"]
 
 
