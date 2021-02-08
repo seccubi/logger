@@ -10,7 +10,6 @@ COPY --from=builder /bin/cat /bin/cat
 COPY --from=builder /bin/sh /bin/sh
 COPY --from=builder /bin/rm /bin/rm
 COPY --from=builder /bin/chmod /bin/chmod
-COPY --from=builder /bin/tail /bin/tail
 COPY --from=builder /usr/bin/curl /usr/bin/curl
 COPY --from=builder /usr/bin/unzip /usr/bin/unzip
 #curl dependencies
@@ -32,7 +31,7 @@ ARG REACT_APP_API_ENTRYPOINT=https://api.seccubi.com
 ENV REACT_APP_API_ENTRYPOINT=$REACT_APP_API_ENTRYPOINT
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=45s \
-   CMD /fluent-bit/bin/health.sh
+   CMD /bin/sh /fluent-bit/bin/health.sh
 
 
 #ENTRYPOINT ["/bin/sleep"]
