@@ -9,6 +9,7 @@ COPY --from=builder /bin/sleep /bin/sleep
 COPY --from=builder /bin/cat /bin/cat
 COPY --from=builder /bin/sh /bin/sh
 COPY --from=builder /bin/rm /bin/rm
+COPY --from=builder /bin/ps /bin/ps
 COPY --from=builder /bin/chmod /bin/chmod
 COPY --from=builder /usr/bin/curl /usr/bin/curl
 COPY --from=builder /usr/bin/unzip /usr/bin/unzip
