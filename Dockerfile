@@ -33,7 +33,7 @@ RUN chmod +x /fluent-bit/bin/health.sh
 ARG REACT_APP_API_ENTRYPOINT=https://api.seccubi.com
 ENV REACT_APP_API_ENTRYPOINT=$REACT_APP_API_ENTRYPOINT
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=45s \
+HEALTHCHECK --interval=60s --timeout=5s --start-period=120s \
    CMD /bin/sh /fluent-bit/bin/health.sh
 
 ENTRYPOINT ["/bin/sh", "/fluent-bit/bin/entrypoint.sh"]
