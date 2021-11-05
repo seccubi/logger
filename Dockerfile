@@ -2,7 +2,7 @@ FROM debian:latest AS builder
 
 RUN apt-get update && apt-get install -y curl unzip
 
-FROM fluent/fluent-bit:1.7.2 AS logger
+FROM fluent/fluent-bit:1.8.9 AS logger
 
 #core
 COPY --from=builder /bin/sleep /bin/sleep
