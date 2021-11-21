@@ -1,8 +1,8 @@
 FROM debian:buster-slim
 
 RUN apt-get update && apt-get install -y curl unzip supervisor
-COPY --from=fluent/fluent-bit:1.8 /fluent-bit /fluent-bit
-COPY --from=fluent/fluent-bit:1.8 /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/libpq.so.5
+COPY --from=fluent/fluent-bit:1.8.10 /fluent-bit /fluent-bit
+COPY --from=fluent/fluent-bit:1.8.10 /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/libpq.so.5
 
 COPY src/health.sh /fluent-bit/bin/health.sh
 COPY src/entrypoint.sh /fluent-bit/bin/entrypoint.sh
