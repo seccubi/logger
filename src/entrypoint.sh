@@ -10,37 +10,55 @@ downloadConfig () {
 
 getIndicators() {
   response=$(curl $FLAGS -sI  $REACT_APP_API_ENTRYPOINT/api/v1/assets/metadata/$1 | awk '/^HTTP/ { STATUS = $2 }
-                                                                            /^updated:/ { UPDATED = $2 }
-                                                                            END { printf("%s\n%s",STATUS, UPDATED) }')
-}
+                                                                            /^updated/ { UPDATED = $2 }
+                                                                            /^usage/ { USAGE = $2 }
+                                                                            END { printf("%s\n%s\n%s",STATUS, UPDATED, USAGE) }')
 
-getIndicators $1
+								    }
+
+
+KEY=$1
+getIndicators $KEY
 j=0
 for i in $(echo $response)
 do
   if [ $j = 1 ]
   then
-    latestSync=$i
+	  latestSync=$i
+  fi
+  if [ $j = 2 ]
+  then
+    usage=$i
   fi
   j=$((j+1))
 done
 
 downloadConfig $1
 /etc/init.d/supervisor start
+
+
 while :
 do
   j=0
-  getIndicators $1
+  getIndicators $KEY
 
   for i in $(echo $response)
   do
-      if [ $j = 1 ] && [ $i -gt $latestSync ]
+      if [ $j = 1 ] && [[ $i > $latestSync ]]
       then
+        echo "x"
         downloadConfig $1
         supervisorctl restart fluentbit
         latestSync=$i
+      fi
+      if [ $j = 2 ] && [ $i = "0" ]
+      then
+        echo "y"
+        downloadConfig $1
+        supervisorctl restart fluentbit
       fi
       j=$((j+1))
   done
 	sleep 10
 done
+
