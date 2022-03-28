@@ -44,16 +44,14 @@ do
 
   for i in $(echo $response)
   do
-      if [ $j = 1 ] && [[ $i > $latestSync ]]
+      if [ $j = 1 ] && [[ ${i:0:10} > $latestSync ]]
       then
-        echo "x"
         downloadConfig $1
         supervisorctl restart fluentbit
         latestSync=$i
       fi
-      if [ $j = 2 ] && [ $i = "0" ]
+      if [ $j = 2 ] && [ ${i:0:1} = "0" ]
       then
-        echo "y"
         downloadConfig $1
         supervisorctl restart fluentbit
       fi
