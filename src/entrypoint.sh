@@ -36,15 +36,18 @@ done
 downloadConfig $1
 /etc/init.d/supervisor start
 
-
 while :
 do
   j=0
   getIndicators $KEY
-
   for i in $(echo $response)
   do
-      if [ $j = 1 ] && [[ ${i:0:10} > $latestSync ]]
+	  echo $i
+	  echo ${i:0:10}
+if [[ ${i:0:10} > $latestSync ]]
+then
+	fi
+      if [ $j = 1 ] && [[ $i > $latestSync ]]
       then
         downloadConfig $1
         supervisorctl restart fluentbit
@@ -54,9 +57,9 @@ do
       then
         downloadConfig $1
         supervisorctl restart fluentbit
+        latestSync=$i
       fi
       j=$((j+1))
   done
-	sleep 10
+	sleep 1000
 done
-
