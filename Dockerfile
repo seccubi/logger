@@ -21,6 +21,6 @@ ENV FLAGS=$FLAGS
 HEALTHCHECK --interval=60s --timeout=5s --start-period=120s \
    CMD /bin/sh /fluent-bit/bin/health.sh
 
-ENTRYPOINT ["/bin/sh", "/fluent-bit/bin/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "/fluent-bit/bin/entrypoint.sh"]
 
 
