@@ -49,12 +49,14 @@ then
 	fi
       if [ $j = 1 ] && [[ $i > $latestSync ]]
       then
+        echo "Restarting due to config updated\n"
         downloadConfig $1
         supervisorctl restart fluentbit
         latestSync=$i
       fi
       if [ $j = 2 ] && [ ${i:0:1} = "0" ]
       then
+        echo "Restarting due to broken connection\n"
         downloadConfig $1
         supervisorctl restart fluentbit
         latestSync=$i
