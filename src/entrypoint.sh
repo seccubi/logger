@@ -58,5 +58,6 @@ do
       fi
       j=$((j+1))
   done
-	sleep 1000
+  curl $FLAGS -X POST $REACT_APP_API_ENTRYPOINT/api/v1/assets/ping/$1
+	sleep 60
 done
