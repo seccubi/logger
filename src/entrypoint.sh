@@ -36,28 +36,34 @@ done
 downloadConfig $1
 /etc/init.d/supervisor start
 
+iteration=0
 while :
 do
-  j=0
-  getIndicators $KEY
-  for i in $(echo $response)
-  do
-      if [ $j = 1 ] && [[ $i > $latestSync ]]
-      then
-        echo "$(date) Restarting due to config updated\n"
-        downloadConfig $1
-        supervisorctl restart fluentbit
-        latestSync=$i
-      fi
-      if [ $j = 2 ] && [ ${i:0:1} = "0" ]
-      then
-        echo "$(date) Restarting due to broken connection\n"
-        downloadConfig $1
-        supervisorctl restart fluentbit
-        latestSync=$i
-      fi
-      j=$((j+1))
-  done
-  curl $FLAGS -X POST $REACT_APP_API_ENTRYPOINT/api/v1/assets/ping/$1
-	sleep 60
+  ((++iteration))
+  if [ $iteration -gt 10 ]
+    then
+    j=0
+    getIndicators $KEY
+    for i in $(echo $response)
+    do
+        if [ $j = 1 ] && [[ $i > $latestSync ]]
+        then
+          echo "$(date) Restarting due to config updated\n"
+          downloadConfig $1
+          #supervisorctl restart fluentbit
+          latestSync=$i
+        fi
+        if [ $j = 2 ] && [ ${i:0:1} = "0" ]
+        then
+          echo "$(date) Restarting due to broken connection\n"
+          downloadConfig $1
+          #supervisorctl restart fluentbit
+          latestSync=$i
+        fi
+        j=$((j+1))
+    done
+    iteration=0
+  fi
+  curl $FLAGS -i $REACT_APP_API_ENTRYPOINT/api/v1/assets/ping/$1 > /dev/null
+	sleep 6000
 done
