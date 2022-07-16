@@ -19,7 +19,7 @@ ARG FLAGS=""
 ENV FLAGS=$FLAGS
 
 HEALTHCHECK --interval=60s --timeout=5s --start-period=120s \
-   CMD /bin/sh curl -s http://127.0.0.1:2020/api/v1/health | grep "ok" || exit 1
+   CMD curl -s http://127.0.0.1:2020/api/v1/health | grep "ok" || exit 1
 
 ENTRYPOINT ["/bin/bash", "/fluent-bit/bin/entrypoint.sh"]
 
