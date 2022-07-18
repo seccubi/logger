@@ -65,5 +65,5 @@ do
     iteration=0
   fi
   curl $FLAGS -i $REACT_APP_API_ENTRYPOINT/api/v1/assets/ping/$1 > /dev/null
-	sleep 6000
+	sleep 60
 done
