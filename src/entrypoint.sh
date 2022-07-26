@@ -10,14 +10,21 @@ downloadConfig () {
 
 getIndicators() {
   response=$(curl $FLAGS -sI  $REACT_APP_API_ENTRYPOINT/api/v1/assets/metadata/$1 | awk '/^HTTP/ { STATUS = $2 }
-                                                                            /^updated/ { UPDATED = $2 }
-                                                                            /^usage/ { USAGE = $2 }
+                                                                       /^usage/ { USAGE = $2 }
                                                                             END { printf("%s\n%s\n%s",STATUS, UPDATED, USAGE) }')
-
-								    }
-
+}
 
 KEY=$1
+while [ -z "${KEY}" ]; do
+  KEY=$API_KEY
+  if [ -z "${KEY}" ]
+    then
+    echo "To obtain assets Secret Key - please log in/sign up at https://app.seccubi.com/ and follow the instructions from https://app.seccubi.com/docs/assets"
+    read -p 'Enter Secret Key: ' KEY;
+  fi
+  export API_KEY=$(echo $KEY)
+done
+
 getIndicators $KEY
 j=0
 for i in $(echo $response)
