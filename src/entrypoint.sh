@@ -34,12 +34,12 @@ do
 done
 
 downloadConfig $1
-/etc/init.d/supervisor start
 
 iteration=0
 while :
 do
-  ((++iteration))
+  ps -aux | grep /fluent-bit/bin/fluent-bit | grep -v grep || /fluent-bit/bin/fluent-bit -vvv -c /fluent-bit/etc/fluent-bit.conf
+  iteration=$((iteration+1))
   if [ $iteration -gt 10 ]
     then
     j=0
@@ -50,14 +50,14 @@ do
         then
           echo "$(date) Restarting due to config updated\n"
           downloadConfig $1
-          #supervisorctl restart fluentbit
+          /fluent-bit/bin/fluent-bit -vvv -c /fluent-bit/etc/fluent-bit.conf
           latestSync=$i
         fi
         if [ $j = 2 ] && [ ${i:0:1} = "0" ]
         then
           echo "$(date) Restarting due to broken connection\n"
           downloadConfig $1
-          #supervisorctl restart fluentbit
+          /fluent-bit/bin/fluent-bit -vvv -c /fluent-bit/etc/fluent-bit.conf
           latestSync=$i
         fi
         j=$((j+1))
