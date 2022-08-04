@@ -50,14 +50,14 @@ do
         then
           echo "$(date) Restarting due to config updated\n"
           downloadConfig $1
-          /fluent-bit/bin/fluent-bit -vvv -c /fluent-bit/etc/fluent-bit.conf
+          killall fluent-bit && /fluent-bit/bin/fluent-bit -vvv -c /fluent-bit/etc/fluent-bit.conf
           latestSync=$i
         fi
         if [ $j = 2 ] && [ ${i:0:1} = "0" ]
         then
           echo "$(date) Restarting due to broken connection\n"
           downloadConfig $1
-          /fluent-bit/bin/fluent-bit -vvv -c /fluent-bit/etc/fluent-bit.conf
+          killall fluent-bit && /fluent-bit/bin/fluent-bit -vvv -c /fluent-bit/etc/fluent-bit.conf
           latestSync=$i
         fi
         j=$((j+1))

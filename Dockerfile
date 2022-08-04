@@ -18,7 +18,7 @@ RUN find -name librtmp.so.1 -exec cp {} /root/lib/ \;
 RUN find -name libprocps.so.8 -exec cp {} /root/lib/ \;
 RUN find -name libpcre.so.3 -exec cp {} /root/lib/ \;
 
-FROM fluent/fluent-bit:1.9.0 as client
+FROM fluent/fluent-bit:1.9.6 as client
 
 COPY --from=builder /usr/bin/curl /usr/bin/curl
 COPY --from=builder /usr/bin/unzip /usr/bin/unzip
@@ -30,6 +30,7 @@ COPY --from=builder /bin/sleep /bin/sleep
 COPY --from=builder /usr/bin/awk /usr/bin/awk
 COPY --from=builder /bin/ps /bin/ps
 COPY --from=builder /bin/grep /bin/grep
+COPY --from=builder /usr/bin/killall /usr/bin/killall
 
 COPY --from=builder /root/lib/* /usr/lib/x86_64-linux-gnu/
 COPY --from=builder /root/lib/* /usr/lib/aarch64-linux-gnu/
