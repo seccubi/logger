@@ -39,7 +39,7 @@ downloadConfig $1
 iteration=0
 while :
 do
-  ((++iteration))
+  iteration=$((iteration+1))
   if [ $iteration -gt 10 ]
     then
     j=0
@@ -50,14 +50,14 @@ do
         then
           echo "$(date) Restarting due to config updated\n"
           downloadConfig $1
-          #supervisorctl restart fluentbit
+          supervisorctl restart fluentbit
           latestSync=$i
         fi
         if [ $j = 2 ] && [ ${i:0:1} = "0" ]
         then
           echo "$(date) Restarting due to broken connection\n"
           downloadConfig $1
-          #supervisorctl restart fluentbit
+          supervisorctl restart fluentbit
           latestSync=$i
         fi
         j=$((j+1))
