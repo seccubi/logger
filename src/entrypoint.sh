@@ -3,8 +3,12 @@ cd /fluent-bit/etc
 
 
 downloadConfig () {
-  rm /fluent-bit/etc/fluent-bit.conf
   rm /fluent-bit/etc/parsers.conf
+  rm /fluent-bit/etc/myCA.pem
+  rm /fluent-bit/etc/key.pem
+  rm /fluent-bit/etc/fluent-bit.conf
+  rm /fluent-bit/etc/cert.pem
+  rm /fluent-bit/etc/.env
   curl $FLAGS -X GET $REACT_APP_API_ENTRYPOINT/api/v1/assets/certificates/$1 --output config.zip
   unzip -o -n config.zip  || exit 1
 
